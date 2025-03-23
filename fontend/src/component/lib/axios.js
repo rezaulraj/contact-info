@@ -1,9 +1,8 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-  //   baseURL:
-  //     import.meta.mode === "development" ? "http://localhost:4000/api" : "/api",
-  baseURL: "http://localhost:4000/api",
+
+  baseURL: import.meta.env.VITE_REACT_APP_BACKEND_BASEURL,
   withCredentials: true,
 });
 
