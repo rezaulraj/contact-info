@@ -1,36 +1,18 @@
-import React, { useState } from "react";
-import { ClipboardList, ChevronDown } from "lucide-react";
-import SearchBar from "./SearchBar";
+import { useEffect, useState } from "react";
+
 import { Link } from "react-router-dom";
 import { useUserStore } from "./stores/useUserStore";
 import logo from "../assets/logo.png";
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [categoryOpen, setCategoryOpen] = useState(false);
-  const [searchOpen, setSearchOpen] = useState(false);
+
   const [userProfileOpen, setUserProfileOpen] = useState(false);
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
-  const handleCategoryOpen = () => setCategoryOpen(!categoryOpen);
-  const handleSearchOpen = () => setSearchOpen(!searchOpen);
-  const handleUserProfileOpen = () => setUserProfileOpen(!userProfileOpen);
-  // Nested categories data
-  const categories = [
-    {
-      name: "Electronics",
-      subcategories: ["Mobile Phones", "Laptops", "Accessories"],
-    },
-    {
-      name: "Fashion",
-      subcategories: ["Men's Clothing", "Women's Clothing", "Shoes"],
-    },
-    {
-      name: "Home & Kitchen",
-      subcategories: ["Furniture", "Cookware", "Decor"],
-    },
-  ];
 
-  // const user = false;
+  const handleUserProfileOpen = () => setUserProfileOpen(!userProfileOpen);
+
   const { user, logout } = useUserStore();
+
   const isAdmin = user?.role === "admin";
   console.log("first", isAdmin);
   return (
@@ -41,7 +23,7 @@ const Header = () => {
           <div className="md:flex md:items-center md:gap-12">
             <Link to={"/"} className="block text-teal-600">
               <span className="sr-only">Home</span>
-              <img src={logo} alt="" className="h-12"/>
+              <img src={logo} alt="" className="h-12" />
             </Link>
           </div>
 
@@ -148,14 +130,7 @@ const Header = () => {
           <div className="md:hidden absolute top-16 left-0 right-0 bg-white shadow-lg z-30">
             <nav aria-label="Global">
               <ul className="space-y-4 p-4 text-sm">
-                {[
-                  "Best Sales",
-                  "Careers",
-                  "History",
-                  "Services",
-                  "Projects",
-                  "Blog",
-                ].map((item) => (
+                {["Contact us", "Careers"].map((item) => (
                   <li key={item}>
                     <a
                       className="text-gray-500 hover:text-gray-700 block"

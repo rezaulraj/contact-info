@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom"; // Import useNavigate
 import { UserPlus, Eye, EyeClosed, Loader } from "lucide-react";
 import { motion } from "framer-motion";
 import { useUserStore } from "./stores/useUserStore";
@@ -12,13 +12,18 @@ const SignUp = () => {
     email: "",
     password: "",
     confirmPassword: "",
+    role: "",
   });
 
   const { signup, loading } = useUserStore();
+  const navigate = useNavigate(); // Get the navigate function
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    signup(formData);
+    const success = await signup(formData); // Assuming signup returns a boolean indicating success
+    if (success) {
+      navigate("/login"); // Navigate to the login page after successful sign-up
+    }
   };
 
   const handleRegularEyeOpen = () => {
@@ -28,6 +33,12 @@ const SignUp = () => {
   const handleConfirmPasswordOpen = () => {
     setIsConfirmEyeOpen(!isConfirmEyeOpen);
   };
+
+  const optionRole = [
+    { role: "customer" },
+    { role: "admin" },
+    { role: "modarator" },
+  ];
 
   return (
     <main className="w-full h-screen flex flex-col items-center justify-center px-4">
@@ -130,6 +141,24 @@ const SignUp = () => {
                   <EyeClosed className="w-5 h-5 text-indigo-500" />
                 )}
               </span>
+            </div>
+            <div>
+              <select
+                value={formData.role}
+                onChange={(e) =>
+                  setFormData({ ...formData, role: e.target.value })
+                }
+                className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
+                name=""
+                id=""
+              >
+                <option>---select role-----</option>
+                {optionRole.map((item, idx) => (
+                  <option key={idx} value={item.role}>
+                    {item.role}
+                  </option>
+                ))}
+              </select>
             </div>
             <button
               type="submit"

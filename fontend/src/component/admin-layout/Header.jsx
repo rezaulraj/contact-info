@@ -1,10 +1,12 @@
 import { AlignJustify, User, LogOut } from "lucide-react";
 import { useState } from "react";
+import { useUserStore } from "../stores/useUserStore";
 
 const Header = ({ toggleSidebar }) => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
-
+  const { logout, user } = useUserStore();
   const handleLogout = () => {
+    logout();
     console.log("User logged out");
     window.location.href = "/login";
   };
@@ -39,8 +41,8 @@ const Header = ({ toggleSidebar }) => {
             {isProfileOpen && (
               <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg">
                 <div className="p-4">
-                  <p className="text-sm font-semibold">John Doe</p>
-                  <p className="text-xs text-gray-500">john.doe@example.com</p>
+                  <p className="text-sm font-semibold">{user.name}</p>
+                  <p className="text-xs text-gray-500">{user.email}</p>
                 </div>
                 <hr className="border-gray-200" />
                 <button
