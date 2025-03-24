@@ -1,7 +1,10 @@
 import React, { useState } from "react";
+import { Helmet } from "react-helmet-async";
+import { FaFacebook, FaTwitter, FaEnvelope, FaCopy } from "react-icons/fa";
 import logo from "../../assets/logo.png";
 import contact from "../../assets/contact.svg";
 import { useCotactStore } from "../../component/stores/useContactStore";
+
 const HomePage = () => {
   const [formData, setFormData] = useState({
     name: "",
@@ -14,14 +17,69 @@ const HomePage = () => {
     e.preventDefault();
     await createContact(formData);
   };
+
+  const url = "https://yourwebsite.com/contact";
+  const text = "Check out this Contact Us page!";
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(url);
+    alert("Link copied to clipboard!");
+  };
+
   return (
     <div className="max-w-[1280px] mx-auto bg-blue-100 relative">
+      <Helmet>
+        {/* Schema Markup */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "ContactPage",
+            name: "Contact Us",
+            url: url,
+            description:
+              "Get in touch with us for inquiries, support, or feedback.",
+          })}
+        </script>
+        {/* Open Graph (Facebook, LinkedIn) */}
+        <meta
+          property="og:title"
+          content="Contact Us - CyberCraft Bangladesh"
+        />
+        <meta
+          property="og:description"
+          content="Reach out to us for support or inquiries."
+        />
+        <meta
+          property="og:image"
+          content="https://yourwebsite.com/contact-thumbnail.jpg"
+        />
+        <meta property="og:url" content={url} />
+        <meta property="og:type" content="website" />
+        {/* Twitter Card */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta
+          name="twitter:title"
+          content="Contact Us - CyberCraft Bangladesh"
+        />
+        <meta
+          name="twitter:description"
+          content="Reach out to us for support or inquiries."
+        />
+        <meta
+          name="twitter:image"
+          content="https://yourwebsite.com/contact-thumbnail.jpg"
+        />
+        <meta name="twitter:site" content="@yourtwitterhandle" />
+      </Helmet>
+
       <div className="grid grid-cols-1 md:grid-cols-2 items-center justify-center relative overflow-hidden">
-        {/* form */}
+        {/* Gradient Overlay */}
         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-blue-400/30 to-blue-400 transform -rotate-45 origin-top"></div>
-        <div className="flex-1 mt-12 sm:max-w-lg lg:max-w-md px-6 py-6  relative z">
+
+        {/* Form Section */}
+        <div className="flex-1 mt-12 sm:max-w-lg lg:max-w-md px-6 py-6 relative z">
           <div className="flex items-center justify-center">
-            <img src={logo} alt="" className="h-18" />
+            <img src={logo} alt="CyberCraft Logo" className="h-18" />
           </div>
           <div className="text-center mb-8">
             <p className="text-gray-700">
@@ -73,9 +131,49 @@ const HomePage = () => {
               Submit
             </button>
           </form>
+
+          {/* Social Share Buttons */}
+          <div className="flex gap-4 mt-4">
+            <a
+              href={`https://www.facebook.com/sharer/sharer.php?u=${url}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600"
+            >
+              <FaFacebook size={24} />
+            </a>
+
+            <a
+              href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
+                text
+              )}&url=${url}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-400"
+            >
+              <FaTwitter size={24} />
+            </a>
+
+            <a
+              href={`mailto:?subject=${encodeURIComponent(text)}&body=${url}`}
+              className="text-red-500"
+            >
+              <FaEnvelope size={24} />
+            </a>
+
+            <button onClick={handleCopy} className="text-gray-700">
+              <FaCopy size={24} />
+            </button>
+          </div>
         </div>
+
+        {/* Image Section */}
         <div>
-          <img src={contact} alt="" className="h-[60%] w-[60%]" />
+          <img
+            src={contact}
+            alt="Contact Illustration"
+            className="h-[60%] w-[60%]"
+          />
         </div>
       </div>
     </div>
